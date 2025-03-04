@@ -1,7 +1,5 @@
 package com.alejobello.crecimientodiario
 
-
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,29 +10,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class MainActivity : ComponentActivity() {
+class ConfirmacionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val nombre = intent.getStringExtra("nombre") ?: "Desconocido"
+
         setContent {
-            PantallaPresentacion {
-                val intent = Intent(this, FormularioActivity::class.java)
-                startActivity(intent)
-            }
+            ConfirmacionScreen(nombre)
         }
     }
 }
 
 @Composable
-fun PantallaPresentacion(onContinuar: () -> Unit) {
+fun ConfirmacionScreen(nombre: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Bienvenido a Crecimiento Diario", fontSize = 24.sp)
+        Text(text = "¡Registro exitoso!", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = onContinuar) {
-            Text("Comenzar")
-        }
+        Text(text = "Bienvenido, $nombre", fontSize = 20.sp)
     }
 }

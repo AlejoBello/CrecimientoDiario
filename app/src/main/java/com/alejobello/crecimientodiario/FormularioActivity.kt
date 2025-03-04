@@ -1,23 +1,24 @@
 package com.alejobello.crecimientodiario
 
-
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class MainActivity : ComponentActivity() {
+class FormularioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PantallaPresentacion {
-                val intent = Intent(this, FormularioActivity::class.java)
+            FormularioScreen { nombre ->
+                val intent = Intent(this, ConfirmacionActivity::class.java)
+                intent.putExtra("nombre", nombre)
                 startActivity(intent)
             }
         }
@@ -25,16 +26,20 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PantallaPresentacion(onContinuar: () -> Unit) {
+fun FormularioScreen(onEnviar: (String) -> Unit) {
+    var nombre by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Bienvenido a Crecimiento Diario", fontSize = 24.sp)
+        Text(text = "Ingresa tu nombre:", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(10.dp))
+        BasicTextField(value = nombre, onValueChange = { nombre = it })
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = onContinuar) {
-            Text("Comenzar")
+        Button(onClick = { onEnviar(nombre) }) {
+            Text("Enviar")
         }
     }
 }
